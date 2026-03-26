@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>AWS on Kuldeep Chowhan</title>
+    <link>https://kuldeepchowhan.com/tags/aws/</link>
+    <description>Recent content in AWS on Kuldeep Chowhan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>&amp;copy; 2026 Kuldeep Chowhan</copyright>
+    <lastBuildDate>Mon, 01 Jan 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://kuldeepchowhan.com/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Publications &amp; Speaking Engagements</title>
+      <link>https://kuldeepchowhan.com/publications/</link>
+      <pubDate>Mon, 01 Jan 2024 00:00:00 +0000</pubDate>
+      
+      <guid>https://kuldeepchowhan.com/publications/</guid>
+      <description>Explore publications, speaking engagements, and technical articles by Kuldeep Chowhan, including his book on Serverless Computing, AWS re:Invent presentations, and open source contributions.</description>
+    </item>
+    
+  </channel>
+</rss>

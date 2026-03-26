@@ -1,0 +1,106 @@
+baseURL: https://kuldeepchowhan.com/
+languageCode: en-US
+title: "Kuldeep Chowhan"
+theme: "PaperMod"
+description: "Profile of Kuldeep Chowhan - technology executive, startup founder, author of Hands-On Serverless Computing (Packt Publishing), and Forbes Technology Council member. Previously VP of Marketplace Technology at Walmart Global Tech and Principal Software Developer at Expedia Group."
+keywords: ["kuldeep chowhan", "technology executive", "AI agents", "agentic AI", "platform engineering", "cloud architecture", "AWS", "technology leadership", "startup founder", "serverless", "Forbes Technology Council"]
+copyright: "&copy; 2026 Kuldeep Chowhan"
+enableRobotsTXT: false  # Using static/robots.txt instead of Hugo-generated
+pagination:
+  pagerSize: 10
+
+taxonomies:
+  tag: tags
+  category: categories
+  series: series
+
+menu:
+  main:
+    - identifier: blog
+      name: Blog
+      url: /blog/
+      weight: 10
+    - identifier: publications
+      name: Publications
+      url: /publications/
+      weight: 20
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 30
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 40
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false
+  tableOfContents:
+    startLevel: 2
+    endLevel: 4
+
+params:
+  env: production
+  description: "Profile of Kuldeep Chowhan - technology executive, startup founder, author of Hands-On Serverless Computing (Packt Publishing), and Forbes Technology Council member. Previously VP of Marketplace Technology at Walmart Global Tech and Principal Software Developer at Expedia Group."
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowWordCount: false
+  ShowToc: true
+  TocOpen: false
+  defaultTheme: auto
+  comments: false
+  assets:
+    favicon: "favicon.ico"
+    favicon16x16: "favicon-16x16.png"
+    favicon32x32: "favicon-32x32.png"
+    apple_touch_icon: "apple-touch-icon.png"
+  profileMode:
+    enabled: true
+    subtitle: "Technology Executive & Startup Founder · Building AI Agents & Agentic Systems · Angel Investor in AI Startups · Published Author of *Hands-On Serverless Computing* · Forbes Technology Council Member · 20+ years scaling platforms at Walmart, Expedia, SoFi & Microsoft"
+    imageUrl: "Kuldeep.webp"
+    imageWidth: 120
+    imageHeight: 120
+    imageTitle: "Kuldeep Chowhan — Founder, AI Agents, Cloud Architecture"
+    buttons:
+      - name: About Me
+        url: /about/
+  socialIcons:
+    - name: LinkedIn
+      url: "https://www.linkedin.com/in/kuldeepchowhan/"
+    - name: Github
+      url: "https://github.com/kchowhan"
+    - name: Medium
+      url: "https://medium.com/@kuldeep"
+  # Author info (used by schema partials and post metadata)
+  author:
+    name: "Kuldeep Chowhan"
+    url: "https://kuldeepchowhan.com"
+    jobTitle: "Founder"
+    worksFor: "Stealth Startup"
+    sameAs:
+      - "https://www.linkedin.com/in/kuldeepchowhan/"
+      - "https://github.com/kchowhan"
+      - "https://councils.forbes.com/profile/Kuldeep-Chowhan-Vice-President-Marketplace-Technology-Walmart/b321c354-4586-4af1-932d-f94804a499ae"
+      - "https://medium.com/@kuldeep"
+
+sitemap:
+  changefreq: weekly
+  filename: sitemap.xml
+  priority: 0.5
+  disabled: false
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+  section:
+    - HTML
+    - RSS

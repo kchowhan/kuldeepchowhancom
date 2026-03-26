@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Blog on Kuldeep Chowhan</title>
+    <link>https://kuldeepchowhan.com/blog/</link>
+    <description>Recent content in Blog on Kuldeep Chowhan</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <copyright>&amp;copy; 2026 Kuldeep Chowhan</copyright>
+    <lastBuildDate>Thu, 26 Mar 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://kuldeepchowhan.com/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI Agents for Normal Builders: A Practical Guide to Getting Real Work Done</title>
+      <link>https://kuldeepchowhan.com/blog/ai-agents-for-normal-builders/</link>
+      <pubDate>Thu, 26 Mar 2026 00:00:00 +0000</pubDate>
+      
+      <guid>https://kuldeepchowhan.com/blog/ai-agents-for-normal-builders/</guid>
+      <description>A practical guide to building AI agents that actually ship. Covers agent maturity levels, bounded agency, real-world use cases, Claude Code examples, and a launch checklist for builders who want agents that do real work.</description>
+    </item>
+    
+    <item>
+      <title>What Platform Engineering Actually Means in 2026</title>
+      <link>https://kuldeepchowhan.com/blog/platform-engineering-in-2026/</link>
+      <pubDate>Wed, 25 Mar 2026 00:00:00 +0000</pubDate>
+      
+      <guid>https://kuldeepchowhan.com/blog/platform-engineering-in-2026/</guid>
+      <description>Platform engineering has evolved from a buzzword into a core discipline. Here&amp;#39;s what it actually means in 2026, based on lessons from building platforms at Walmart, Expedia, and SoFi.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://kuldeepchowhan.com/blog/ai-agents-for-normal-builders-medium/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kuldeepchowhan.com/blog/ai-agents-for-normal-builders-medium/</guid>
+      <description>&lt;h1 id=&#34;ai-agents-for-normal-builders-a-practical-guide-to-getting-real-work-done&#34;&gt;AI Agents for Normal Builders: A Practical Guide to Getting Real Work Done&lt;/h1&gt;
+&lt;p&gt;AI agents are having a moment. Most of the conversation is either hype or doom. Neither helps you ship.&lt;/p&gt;
+&lt;p&gt;An AI agent is not magic. It is a workflow.&lt;/p&gt;
+&lt;p&gt;If you strip it down, an agent is simply: &lt;strong&gt;LLM + tools + memory + a loop + guardrails.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;When that combination is designed well, it compresses 30-to-90-minute tasks into 3-to-10 minutes of review. When designed poorly, it becomes a confident intern that breaks production.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,10 @@
+{{- /* Head custom content area start */ -}}
+{{- /* Custom CSS for publications page */ -}}
+{{- if or (eq .RelPermalink "/publications/") (eq .RelPermalink "/publications") -}}
+<link rel="stylesheet" href="{{ "/assets/css/publications.css" | relURL }}">
+{{- end -}}
+{{- /* RSS autodiscovery for blog */ -}}
+<link rel="alternate" type="application/rss+xml" title="{{ site.Title }} - Blog" href="{{ "blog/index.xml" | absURL }}">
+{{- /* LLMs.txt reference */ -}}
+<link rel="alternate" type="text/plain" href="{{ "llms.txt" | absURL }}" title="LLMs.txt">
+{{- /* Head custom content area end */ -}}

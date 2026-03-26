@@ -1,0 +1,54 @@
+/* Custom styles for publications page */
+.publication-item {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--entry);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.publication-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.publication-item h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    color: var(--primary);
+    font-size: 1.25rem;
+}
+
+.publication-item p {
+    margin-bottom: 0.5rem;
+    color: var(--secondary);
+    line-height: 1.6;
+}
+
+.publication-item a {
+    color: var(--primary);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--primary);
+    transition: border-color 0.2s;
+}
+
+.publication-item a:hover {
+    border-bottom-color: var(--secondary);
+}
+
+.publication-item strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .publication-item {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+

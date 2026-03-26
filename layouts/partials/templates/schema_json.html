@@ -1,0 +1,382 @@
+{{ if .IsHome }}
+{{/* ============ HOMEPAGE: Person + Book via @graph ============ */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://kuldeepchowhan.com/#person",
+      "name": {{ site.Params.author.name | default site.Title }},
+      "url": {{ site.BaseURL }},
+      "description": {{ site.Params.description | plainify | truncate 180 }},
+      "image": {{ "Kuldeep.webp" | absURL }},
+      "jobTitle": {{ site.Params.author.jobTitle | default "" }},
+      "worksFor": {
+        "@type": "Organization",
+        "name": {{ site.Params.author.worksFor | default "" }}
+      },
+      "sameAs": [
+        {{- range $i, $e := site.Params.author.sameAs }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
+      ],
+      "alumniOf": [
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "Berkeley Haas School of Business"
+        },
+        {
+          "@type": "CollegeOrUniversity",
+          "name": "Indian School of Business"
+        }
+      ],
+      "memberOf": {
+        "@type": "Organization",
+        "name": "Forbes Technology Council"
+      },
+      "knowsAbout": [
+        "AI Agents",
+        "Agentic AI",
+        "Artificial Intelligence",
+        "Platform Engineering",
+        "Distributed Systems",
+        "Cloud Architecture",
+        "Microservices",
+        "AWS",
+        "Kubernetes",
+        "CI/CD",
+        "DevOps",
+        "Site Reliability Engineering",
+        "Engineering Leadership",
+        "Serverless Computing",
+        "E-commerce Platforms",
+        "Fintech",
+        "Enterprise AI Systems"
+      ],
+      "hasCredential": [
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "Business Analytics for Leaders",
+          "credentialCategory": "Executive Education",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "UC Berkeley, Haas School of Business"
+          }
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          "name": "CTO Programme",
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "Indian School of Business"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "Book",
+      "name": "Hands-On Serverless Computing",
+      "author": { "@id": "https://kuldeepchowhan.com/#person" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Packt Publishing"
+      },
+      "datePublished": "2018-07",
+      "isbn": "9781788836650",
+      "numberOfPages": 350,
+      "url": "https://www.amazon.com/Hands-Serverless-Computing-orchestrate-applications/dp/1788836650"
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://kuldeepchowhan.com/",
+      "name": {{ site.Title }},
+      "url": {{ site.BaseURL }},
+      "about": { "@id": "https://kuldeepchowhan.com/#person" },
+      "significantLink": [
+        "https://kuldeepchowhan.com/about/",
+        "https://kuldeepchowhan.com/publications/",
+        "https://kuldeepchowhan.com/blog/",
+        "https://www.linkedin.com/in/kuldeepchowhan/",
+        "https://medium.com/@kuldeep",
+        "https://www.amazon.com/Hands-Serverless-Computing-orchestrate-applications/dp/1788836650"
+      ]
+    }
+  ]
+}
+</script>
+{{- else if (or .IsPage .IsSection) }}
+
+{{/* ============ BREADCRUMBLIST: All non-home pages ============ */}}
+{{- $url := replace .Parent.Permalink ( printf "%s" site.BaseURL) "" }}
+{{- $lang_url := strings.TrimPrefix ( printf "%s/" .Lang) $url }}
+{{- $bc_list := (split $lang_url "/")}}
+
+{{- $scratch := newScratch }}
+{{- $scratch.Set "bcCount" 0 -}}
+{{- range $index, $element := $bc_list -}}
+  {{- $scratch.Add "path" (printf "%s/" $element) -}}
+  {{- $bc_pg := site.GetPage ($scratch.Get "path") -}}
+  {{- if (and ($bc_pg) (gt (len $element) 0)) -}}
+    {{- $scratch.Set "bcCount" (add ($scratch.Get "bcCount") 1) -}}
+  {{- end -}}
+{{- end -}}
+{{- $scratch.Set "path" "" -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+  {{- $emitted := 0 }}
+  {{- range $index, $element := $bc_list }}
+
+    {{- $scratch.Add "path" (printf "%s/" $element ) | safeJS }}
+    {{- $bc_pg := site.GetPage ($scratch.Get "path") -}}
+
+    {{- if (and ($bc_pg) (gt (len . ) 0))}}
+    {{- if $emitted }}, {{end }}
+    {
+      "@type": "ListItem",
+      "position": {{ add 1 $emitted }},
+      "name": {{ $bc_pg.Name }},
+      "item": {{ $bc_pg.Permalink }}
+    }
+    {{- $emitted = add $emitted 1 }}
+    {{- end }}
+
+  {{- end }}
+  {{- /*  self-page addition  */ -}}
+  {{- if $emitted }}, {{end }}
+    {
+      "@type": "ListItem",
+      "position": {{ add 1 $emitted }},
+      "name": {{ .Name }},
+      "item": {{ .Permalink }}
+    }
+  ]
+}
+</script>
+
+{{- if .IsPage }}
+
+{{/* Skip schema for search page and redirect pages (pages with meta refresh) */}}
+{{- $isSearch := eq .Layout "search" -}}
+{{- $isRedirect := findRE "window\\.location\\.replace" .RawContent -}}
+{{- $isAbout := eq .RelPermalink "/about/" -}}
+{{- $isBlogPost := eq .Section "blog" -}}
+
+{{- if $isAbout }}
+{{/* ============ ABOUT PAGE: AboutPage + Person mainEntity ============ */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": {{ .Title | plainify }},
+  "description": {{ with .Description | plainify }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }},
+  "url": {{ .Permalink }},
+  "inLanguage": {{ .Language.Lang | default "en-us" }},
+  "dateModified": {{ .Lastmod }},
+  "mainEntity": {
+    "@type": "Person",
+    "name": {{ site.Params.author.name | default "Kuldeep Chowhan" }},
+    "url": {{ site.Params.author.url | default site.BaseURL }},
+    "jobTitle": {{ site.Params.author.jobTitle | default "" }},
+    "worksFor": {
+      "@type": "Organization",
+      "name": {{ site.Params.author.worksFor | default "" }}
+    },
+    "sameAs": [
+      {{- range $i, $e := site.Params.author.sameAs }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
+    ]
+  },
+  "significantLink": [
+    "https://www.linkedin.com/in/kuldeepchowhan/",
+    "https://medium.com/@kuldeep",
+    "https://www.amazon.com/Hands-Serverless-Computing-orchestrate-applications/dp/1788836650",
+    "https://councils.forbes.com/profile/Kuldeep-Chowhan-Vice-President-Marketplace-Technology-Walmart/b321c354-4586-4af1-932d-f94804a499ae",
+    "https://www.walmart.com/",
+    "https://www.expediagroup.com/",
+    "https://www.sofi.com/"
+  ],
+  "relatedLink": [
+    "https://kuldeepchowhan.com/publications/",
+    "https://kuldeepchowhan.com/blog/"
+  ]
+}
+</script>
+
+{{- else if $isBlogPost }}
+{{/* ============ BLOG POSTS: BlogPosting ============ */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ .Title | plainify }},
+  "name": {{ .Title | plainify }},
+  "description": {{ with .Description | plainify }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end -}},
+  "keywords": [
+    {{- if .Params.keywords }}
+    {{ range $i, $e := .Params.keywords }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
+    {{- else }}
+    {{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
+    {{- end }}
+  ],
+  "articleBody": {{ .Content | safeJS | htmlUnescape | plainify }},
+  "wordCount": "{{ .WordCount }}",
+  "inLanguage": {{ .Language.Lang | default "en-us" }},
+  "articleSection": "{{ .Section }}",
+  "timeRequired": "PT{{ math.Max 1 (div .WordCount 200) }}M",
+  {{ if .Params.cover.image -}}
+  "image":
+    {{- if (ne .Params.cover.relative true) -}}
+    {{ .Params.cover.image | absURL }},
+    {{- else -}}
+    {{ (path.Join .RelPermalink .Params.cover.image ) | absURL }},
+    {{- end}}
+  {{- end -}}
+  "datePublished": {{ .PublishDate }},
+  "dateModified": {{ .Lastmod }},
+  "author": {
+    "@type": "Person",
+    "name": {{ site.Params.author.name | default "Kuldeep Chowhan" }},
+    "url": {{ site.Params.author.url | default site.BaseURL }},
+    "jobTitle": {{ site.Params.author.jobTitle | default "" }},
+    "sameAs": [
+      {{- range $i, $e := site.Params.author.sameAs }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
+    ]
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ .Permalink }}
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": {{ site.Params.author.name | default site.Title }},
+    "url": {{ site.Params.author.url | default site.BaseURL }}
+  }
+}
+</script>
+{{- with .Params.faq }}
+{{/* ============ CONDITIONAL: FAQPage ============ */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{- range $i, $e := . }}{{ if $i }},{{ end }}
+    {
+      "@type": "Question",
+      "name": {{ $e.question }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ $e.answer }}
+      }
+    }
+    {{- end }}
+  ]
+}
+</script>
+{{- end }}
+{{- with .Params.howto }}
+{{/* ============ CONDITIONAL: HowTo ============ */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": {{ .name }},
+  "description": {{ .description }},
+  "totalTime": "{{ .totalTime }}",
+  "step": [
+    {{- range $i, $e := .steps }}{{ if $i }},{{ end }}
+    {
+      "@type": "HowToStep",
+      "name": {{ $e.name }},
+      "text": {{ $e.text }}
+    }
+    {{- end }}
+  ]
+}
+</script>
+{{- end }}
+
+{{- else if eq .RelPermalink "/publications/" }}
+{{/* ============ PUBLICATIONS PAGE: CollectionPage + Book + significantLinks ============ */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": {{ .Title | plainify }},
+  "description": {{ with .Description | plainify }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }},
+  "url": {{ .Permalink }},
+  "inLanguage": {{ .Language.Lang | default "en-us" }},
+  "dateModified": {{ .Lastmod }},
+  "author": {
+    "@type": "Person",
+    "name": {{ site.Params.author.name | default "Kuldeep Chowhan" }},
+    "url": {{ site.Params.author.url | default site.BaseURL }}
+  },
+  "mainEntity": {
+    "@type": "Book",
+    "name": "Hands-On Serverless Computing",
+    "author": {
+      "@type": "Person",
+      "name": "Kuldeep Chowhan"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Packt Publishing"
+    },
+    "datePublished": "2018-07",
+    "isbn": "9781788836650",
+    "numberOfPages": 350,
+    "inLanguage": "en",
+    "bookFormat": "https://schema.org/Paperback",
+    "url": "https://www.amazon.com/Hands-Serverless-Computing-orchestrate-applications/dp/1788836650"
+  },
+  "significantLink": [
+    "https://www.linkedin.com/in/kuldeepchowhan/",
+    "https://www.amazon.com/Hands-Serverless-Computing-orchestrate-applications/dp/1788836650",
+    "https://youtu.be/oJUpUQ_yNVw",
+    "https://youtu.be/ry5GmEFa7P8",
+    "https://youtu.be/gT9x9LnU_rE",
+    "https://youtu.be/7r4_Ne7v38o",
+    "https://github.com/awslabs/cloudtrail-api-lookup",
+    "https://hackernoon.com/chaos-engineering-using-amazon-ec2-systems-manager-5278e0bc8482",
+    "https://hackernoon.com/serverless-app-aws-cloudtrail-log-analytics-using-amazon-elasticsearch-service-76ed8dfa064a"
+  ]
+}
+</script>
+
+{{- else if not (or $isSearch (gt (len $isRedirect) 0)) }}
+{{/* ============ OTHER PAGES (generic fallback): WebPage ============ */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": {{ .Title | plainify }},
+  "description": {{ with .Description | plainify }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }},
+  "url": {{ .Permalink }},
+  "inLanguage": {{ .Language.Lang | default "en-us" }},
+  "dateModified": {{ .Lastmod }},
+  "author": {
+    "@type": "Person",
+    "name": {{ site.Params.author.name | default "Kuldeep Chowhan" }}
+  }
+}
+</script>
+{{- end }}{{/* end page type routing */}}
+
+{{- end }}{{/* .IsPage end */}}
+
+{{- if and .IsSection (not .IsPage) }}
+{{/* ============ SECTION PAGES (blog list, tags, categories): CollectionPage ============ */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": {{ .Title }},
+  "description": {{ with .Description }}{{ . }}{{ else }}{{ .Summary | plainify }}{{ end }},
+  "url": {{ .Permalink }}
+}
+</script>
+{{- end }}
+
+{{- end -}}

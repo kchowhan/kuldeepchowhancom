@@ -1,0 +1,108 @@
+/* TASA Explorer Font — self-hosted variable woff2 from Google Fonts */
+@font-face {
+  font-family: 'TASA Explorer';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/tasa-explorer-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'TASA Explorer';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('/fonts/tasa-explorer-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* Apply TASA Explorer globally */
+body {
+  font-family: 'TASA Explorer', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* FAQ Items */
+.faq-item {
+  border-left: 3px solid var(--primary);
+  padding-left: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.faq-item h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.faq-item > div > div p:last-child {
+  margin-bottom: 0;
+}
+
+/* Callout Boxes */
+.callout {
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-left: 4px solid var(--border);
+  border-radius: 4px;
+  background: var(--code-bg);
+}
+
+.callout-label {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.callout p:last-child {
+  margin-bottom: 0;
+}
+
+.callout-summary {
+  border-left-color: #3b82f6;
+}
+
+.callout-summary .callout-label {
+  color: #3b82f6;
+}
+
+.callout-tldr {
+  border-left-color: #22c55e;
+}
+
+.callout-tldr .callout-label {
+  color: #22c55e;
+}
+
+.callout-warning {
+  border-left-color: #f59e0b;
+}
+
+.callout-warning .callout-label {
+  color: #f59e0b;
+}
+
+.callout-tip {
+  border-left-color: #a855f7;
+}
+
+.callout-tip .callout-label {
+  color: #a855f7;
+}
+
+/* Inline Citations */
+.cite-inline {
+  font-size: 0.85em;
+  color: var(--secondary);
+}
+
+.cite-inline a {
+  color: var(--secondary);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+.cite-inline a:hover {
+  color: var(--primary);
+}
