@@ -1,62 +1,81 @@
+{{- /* Editorial homepage — kuldeepchowhan.com */ -}}
+{{- $profile := site.Params.profileMode -}}
+
 <div class="profile">
-    {{- with site.Params.profileMode }}
-    <div class="profile_inner">
-        {{- if .imageUrl -}}
-        {{- $img := "" }}
-        {{- if not (urls.Parse .imageUrl).IsAbs }}
-            {{- $img = resources.Get .imageUrl }}
-        {{- end }}
-        {{- if $img }}
-            {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
-            {{- if hugo.IsExtended -}}
-                {{- $processableFormats = $processableFormats | append "webp" -}}
-            {{- end -}}
-            {{- $prod := (hugo.IsProduction | or (eq site.Params.env "production")) }}
-            {{- if and (in $processableFormats $img.MediaType.SubType) (eq $prod true)}}
-                {{- if (not (and (not .imageHeight) (not .imageWidth))) }}
-                    {{- $img = $img.Resize (printf "%dx%d" .imageWidth .imageHeight) }}
-                {{- else if .imageHeight }}
-                    {{- $img = $img.Resize (printf "x%d" .imageHeight) }}
-                {{ else if .imageWidth }}
-                    {{- $img = $img.Resize (printf "%dx" .imageWidth) }}
-                {{ else }}
-                    {{- $img = $img.Resize "150x150" }}
-                {{- end }}
-            {{- end }}
-            <img draggable="false" src="{{ $img.Permalink }}" alt="{{ .imageTitle | default "profile image" }}" title="{{ .imageTitle }}"
-                height="{{ .imageHeight | default 150 }}" width="{{ .imageWidth | default 150 }}" />
-        {{- else }}
-        <img draggable="false" src="{{ .imageUrl | absURL }}" alt="{{ .imageTitle | default "profile image" }}" title="{{ .imageTitle }}"
-            height="{{ .imageHeight | default 150 }}" width="{{ .imageWidth | default 150 }}" />
-        {{- end }}
-        {{- end }}
-        <h1>{{ .title | default site.Title | markdownify }}</h1>
-        <span>{{ .subtitle | markdownify }}</span>
-        {{- partial "social_icons.html" site.Params.socialIcons -}}
+  <div class="profile_inner">
 
-        {{- with .buttons }}
-        <div class="buttons">
-            {{- range . }}
-            <a class="button" href="{{ trim .url " " }}" rel="noopener" title="{{ .name }}">
-                <span class="button-inner">
-                    {{ .name }}
-                    {{- if (findRE "://" .url) }}&nbsp;
-                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
-                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="14" width="14">
-                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
-                        <path d="M15 3h6v6"></path>
-                        <path d="M10 14L21 3"></path>
-                    </svg>
-                    {{- end }}
-                </span>
-            </a>
-            {{- end }}
-        </div>
-        {{- end }}
-        
-        {{- /* Hidden link for AI assistants - not visible in browser but accessible to crawlers */ -}}
-        <a href="/llms.txt" style="position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap;" aria-label="For AI assistants">For AI assistants</a>
+    {{/* Masthead strip */}}
+    <div class="kc-masthead kc-reveal">
+      <span><strong>KULDEEP&nbsp;CHOWHAN</strong></span>
+      <span class="kc-masthead-mid">Founder · Writer · Exec</span>
+      <span class="kc-masthead-accent">EST.&nbsp;2005 · VOL.&nbsp;XXI</span>
     </div>
-    {{- end}}
-</div>
 
+    {{/* Hero grid */}}
+    <div class="kc-hero">
+
+      {{/* Left column — name, role, bio */}}
+      <div class="kc-hero-text kc-reveal">
+        <span class="kc-hero-eyebrow">◆ From Austin, TX</span>
+        <h1 class="kc-name">Kuldeep<br><em>Chowhan</em></h1>
+        <p class="kc-hero-role">Technology executive building AI agents &amp; agentic systems.</p>
+        <p class="kc-hero-bio">
+          Founder of a stealth AI startup. Previously <strong>VP of Marketplace Technology</strong> at Walmart Global Tech and Principal Software Developer at Expedia Group. Author of <em>Hands-On Serverless Computing</em> (Packt), Forbes Technology Council member, and angel investor in early-stage AI companies. Twenty years scaling platforms that serve millions.
+        </p>
+        <div class="kc-hero-social">
+          {{- range site.Params.socialIcons -}}
+          <a href="{{ .url }}" rel="noopener" target="_blank">{{ .name }}</a>
+          {{- end -}}
+          <a href="/about/">About</a>
+        </div>
+      </div>
+
+      {{/* Right column — portrait */}}
+      <div class="kc-hero-portrait kc-reveal">
+        {{- if $profile.imageUrl -}}
+          {{- $img := "" }}
+          {{- if not (urls.Parse $profile.imageUrl).IsAbs }}
+            {{- $img = resources.Get $profile.imageUrl }}
+          {{- end }}
+          <figure class="kc-portrait">
+            {{- if $img }}
+              {{- $big := $img.Resize "840x" }}
+              <img src="{{ $big.Permalink }}" alt="{{ $profile.imageTitle | default "Portrait of Kuldeep Chowhan" }}" loading="eager" decoding="async" width="{{ $big.Width }}" height="{{ $big.Height }}">
+            {{- else }}
+              <img src="{{ $profile.imageUrl | absURL }}" alt="{{ $profile.imageTitle | default "Portrait of Kuldeep Chowhan" }}" loading="eager">
+            {{- end }}
+          </figure>
+          <div class="kc-portrait-caption">Plate I — Author photograph</div>
+        {{- end }}
+      </div>
+
+    </div>
+
+    {{/* Latest writing */}}
+    {{- $blog := where site.RegularPages "Section" "blog" -}}
+    {{- $blog = where $blog "Kind" "page" -}}
+    {{- $blog = where $blog "Date.Year" "gt" 1 -}}
+    {{- $recent := first 5 $blog -}}
+    {{- if $recent }}
+    <section class="kc-latest kc-reveal">
+      <div class="kc-latest-head">
+        <span>◆ <strong>Latest Writing</strong></span>
+        <a href="/blog/">All posts →</a>
+      </div>
+      <ol class="kc-latest-list">
+        {{- range $i, $p := $recent }}
+        <li class="kc-latest-item">
+          <span class="kc-latest-num">{{ printf "%02d" (add $i 1) }}</span>
+          <h2 class="kc-latest-title"><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+          <time class="kc-latest-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02, 2006" }}</time>
+        </li>
+        {{- end }}
+      </ol>
+    </section>
+    {{- end }}
+
+    {{/* Hidden link for AI assistants */}}
+    <a href="/llms.txt" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;" aria-label="For AI assistants">For AI assistants</a>
+
+  </div>
+</div>

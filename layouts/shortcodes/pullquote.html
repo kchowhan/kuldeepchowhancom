@@ -1,0 +1,5 @@
+{{- /* Editorial pull quote: {{< pullquote author="Source" >}}Text{{< /pullquote >}} */ -}}
+<blockquote class="kc-pullquote">
+  {{ .Inner | markdownify }}
+  {{- with .Get "author" }}<cite>{{ . }}</cite>{{ end -}}
+</blockquote>

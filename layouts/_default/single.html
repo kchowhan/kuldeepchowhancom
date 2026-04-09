@@ -1,0 +1,78 @@
+{{- define "main" }}
+
+<article class="post-single">
+
+  <header class="post-header kc-reveal">
+    <div class="kc-post-eyebrow">
+      {{- $cat := index (.GetTerms "categories") 0 -}}
+      {{- if $cat }}◆ <a href="{{ $cat.Permalink }}">{{ upper $cat.LinkTitle }}</a>{{ else }}◆ ESSAY{{ end }}
+      &nbsp;·&nbsp; <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "JANUARY 02, 2006" | upper }}</time>
+      {{- with .ReadingTime }} &nbsp;·&nbsp; {{ . }} MIN READ{{ end }}
+    </div>
+
+    <h1 class="post-title">
+      {{ .Title }}
+      {{- if .Draft }}<sup><span class="entry-isdraft">&nbsp;&nbsp;[draft]</span></sup>{{- end }}
+    </h1>
+
+    {{- if .Description }}
+    <div class="post-description">{{ .Description }}</div>
+    {{- end }}
+
+    <div class="kc-byline">
+      <span class="kc-byline-label">By</span>
+      <span class="kc-byline-name">{{ .Params.author | default site.Params.author.name }}</span>
+    </div>
+  </header>
+
+  {{- $isHidden := .Params.cover.hidden | default site.Params.cover.hiddenInSingle | default site.Params.cover.hidden }}
+  {{- if and .Params.cover.image (not $isHidden) }}
+  <figure class="kc-cover kc-reveal">
+    {{- partial "cover.html" (dict "cxt" . "IsHome" false "isHidden" false) }}
+  </figure>
+  {{- end }}
+
+  {{- if (.Param "ShowToc") }}
+  <div class="kc-reveal">
+  {{- partial "toc.html" . }}
+  </div>
+  {{- end }}
+
+  {{- if .Content }}
+  <div class="post-content kc-reveal">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
+  </div>
+  {{- end }}
+
+  <footer class="post-footer kc-reveal">
+    {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
+    {{- with ($.GetTerms $tags) }}
+    <div class="kc-tags-label">◆ FILED UNDER</div>
+    <ul class="post-tags">
+      {{- range . }}
+      <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+      {{- end }}
+    </ul>
+    {{- end }}
+
+    {{- if (.Param "ShowPostNavLinks") }}
+    {{- partial "post_nav_links.html" . }}
+    {{- end }}
+
+    {{- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
+    {{- partial "share_icons.html" . -}}
+    {{- end }}
+
+    <div class="kc-colophon">
+      <span>— {{ .Date.Format "MMMM 2, 2006" }}, Austin TX</span>
+    </div>
+  </footer>
+
+  {{- if (.Param "comments") }}
+  {{- partial "comments.html" . }}
+  {{- end }}
+</article>
+
+{{- end }}{{/* end main */}}

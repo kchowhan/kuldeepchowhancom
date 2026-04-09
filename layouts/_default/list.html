@@ -1,0 +1,119 @@
+{{- define "main" }}
+
+{{- if (and site.Params.profileMode.enabled .IsHome) }}
+{{- partial "index_profile.html" . }}
+{{- else }}
+
+{{- if not .IsHome | and .Title }}
+<header class="page-header kc-reveal">
+  {{- partial "breadcrumbs.html" . }}
+  <div class="kc-page-eyebrow">
+    {{- if eq .Kind "term" }}◆ {{ upper .Type }}{{ else if eq .Kind "section" }}◆ SECTION{{ else }}◆ {{ upper .Kind }}{{ end }}
+  </div>
+  <h1>
+    {{ .Title }}
+    {{- if and (or (eq .Kind `term`) (eq .Kind `section`)) (.Param "ShowRssButtonInSectionTermList") }}
+    <a href="index.xml" title="RSS" aria-label="RSS" class="kc-rss">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="24">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+    {{- end }}
+  </h1>
+  {{- if .Description }}
+  <div class="post-description">
+    {{ .Description | markdownify }}
+  </div>
+  {{- else if eq .Section "blog" }}
+  <div class="post-description">
+    <em>Essays on platform engineering, AI agents, and building systems at scale.</em>
+  </div>
+  {{- end }}
+</header>
+{{- end }}
+
+{{- if .Content }}
+<div class="post-content kc-reveal">
+  {{- if not (.Param "disableAnchoredHeadings") }}
+  {{- partial "anchored_headings.html" .Content -}}
+  {{- else }}{{ .Content }}{{ end }}
+</div>
+{{- end }}
+
+{{- $pages := union .RegularPages .Sections }}
+{{- if .IsHome }}
+{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
+{{- end }}
+{{- $pages = where $pages "Kind" "page" }}
+{{- $pages = where $pages "Date.Year" "gt" 1 }}
+
+{{- $paginator := .Paginate $pages }}
+
+{{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
+{{- partial "home_info.html" . }}
+{{- end }}
+
+<div class="kc-entries">
+{{- $term := .Data.Term }}
+{{- range $index, $page := $paginator.Pages }}
+
+{{- $class := "post-entry kc-reveal" }}
+{{- if $term }}{{- $class = "post-entry tag-entry kc-reveal" }}{{- end }}
+
+<article class="{{ $class }}">
+  <span class="kc-entry-num">{{ printf "%02d" (add $index 1) }}</span>
+  <div class="kc-entry-body">
+    <header class="entry-header">
+      <h2>
+        {{- .Title }}
+        {{- if .Draft }}<sup><span class="entry-isdraft">&nbsp;&nbsp;[draft]</span></sup>{{- end }}
+      </h2>
+    </header>
+    {{- if (ne (.Param "hideSummary") true) }}
+    <div class="entry-content">
+      <p>{{ or .Description .Summary | plainify | htmlUnescape }}{{ if .Truncated }}{{ end }}</p>
+    </div>
+    {{- end }}
+    {{- if not (.Param "hideMeta") }}
+    <footer class="entry-footer kc-meta">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02, 2006" }}</time>
+      {{- with .ReadingTime }} &nbsp;·&nbsp; {{ . }} MIN READ{{ end }}
+      {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
+      {{- with ($.GetTerms $tags) }}
+        {{- $first := index . 0 }}
+        &nbsp;·&nbsp; <a href="{{ $first.Permalink }}">{{ $first.LinkTitle | upper }}</a>
+      {{- end }}
+    </footer>
+    {{- end }}
+  </div>
+  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+</article>
+{{- end }}
+</div>
+
+{{- if gt $paginator.TotalPages 1 }}
+<footer class="page-footer">
+  <nav class="pagination">
+    {{- if $paginator.HasPrev }}
+    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
+      «&nbsp;{{ i18n "prev_page" }}&nbsp;
+      {{- if (.Param "ShowPageNums") }}{{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}{{- end }}
+    </a>
+    {{- end }}
+    {{- if $paginator.HasNext }}
+    <a class="next" href="{{ $paginator.Next.URL | absURL }}">
+      {{- i18n "next_page" }}&nbsp;
+      {{- if (.Param "ShowPageNums") }}{{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}{{- end }}&nbsp;»
+    </a>
+    {{- end }}
+  </nav>
+</footer>
+{{- end }}
+
+{{- end }}{{/* end profileMode */}}
+
+{{- end }}{{- /* end main */ -}}

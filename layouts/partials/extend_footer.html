@@ -1,0 +1,40 @@
+{{- /* Reading progress bar + scroll reveal — kuldeepchowhan.com */ -}}
+<div class="kc-progress" aria-hidden="true"><div class="kc-progress-bar"></div></div>
+<script>
+(function () {
+  // Reading progress (only on article pages)
+  var bar = document.querySelector('.kc-progress-bar');
+  var article = document.querySelector('.post-single .post-content');
+  if (bar && article) {
+    var update = function () {
+      var rect = article.getBoundingClientRect();
+      var total = rect.height - window.innerHeight + rect.top + window.scrollY;
+      var progress = Math.min(Math.max((window.scrollY - (rect.top + window.scrollY - 100)) / (rect.height - 200), 0), 1);
+      bar.style.width = (progress * 100) + '%';
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+  } else if (bar) {
+    bar.parentNode.style.display = 'none';
+  }
+
+  // Scroll reveal
+  var els = document.querySelectorAll('.kc-reveal');
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    els.forEach(function (el) { el.classList.add('is-visible'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry, i) {
+      if (entry.isIntersecting) {
+        var el = entry.target;
+        var delay = parseInt(el.dataset.delay || '0', 10);
+        setTimeout(function () { el.classList.add('is-visible'); }, delay);
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(function (el) { io.observe(el); });
+})();
+</script>

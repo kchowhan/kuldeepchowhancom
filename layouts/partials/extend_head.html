@@ -1,4 +1,8 @@
 {{- /* Head custom content area start */ -}}
+{{- /* Editorial typography — Fraunces (display) + JetBrains Mono (metadata) */ -}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..800,30..100&family=JetBrains+Mono:wght@400;500;600&display=swap">
 {{- /* Custom CSS for publications page */ -}}
 {{- if or (eq .RelPermalink "/publications/") (eq .RelPermalink "/publications") -}}
 <link rel="stylesheet" href="{{ "/assets/css/publications.css" | relURL }}">
@@ -7,4 +11,7 @@
 <link rel="alternate" type="application/rss+xml" title="{{ site.Title }} - Blog" href="{{ "blog/index.xml" | absURL }}">
 {{- /* LLMs.txt reference */ -}}
 <link rel="alternate" type="text/plain" href="{{ "llms.txt" | absURL }}" title="LLMs.txt">
+{{- /* Theme color matches paper */ -}}
+<meta name="theme-color" content="#FAF7F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#13110D" media="(prefers-color-scheme: dark)">
 {{- /* Head custom content area end */ -}}
